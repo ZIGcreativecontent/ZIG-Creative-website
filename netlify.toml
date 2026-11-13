@@ -1,0 +1,28 @@
+# Netlify configuration for ZIG Creative
+# Static site: no build step and no dependencies needed.
+
+[build]
+  publish = "."
+  command = ""
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+[[headers]]
+  for = "/favicon.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[functions]
+  directory = "netlify/functions"
+
+# Serve the AI receptionist demo at /demo
+[[redirects]]
+  from = "/demo"
+  to = "/demo.html"
+  status = 200

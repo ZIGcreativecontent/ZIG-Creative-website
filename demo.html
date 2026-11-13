@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Receptionist Demo | ZIG Creative</title>
+<meta name="description" content="Try a live AI receptionist demo by ZIG Creative, built for a fictional luxury aesthetics clinic.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#07080B">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Instrument+Sans:wght@400..600&family=JetBrains+Mono:wght@400;500&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Same ZIG Creative tokens as the homepage; the fictional clinic gets its own serif wordmark inside the chat */
+  --ink: #07080B;
+  --ink-2: #10131B;
+  --paper: #FFFFFF;
+  --mist: #F3F5FA;
+  --line: #E1E5EE;
+  --muted: #586074;
+  --blue: #1F4FFF;
+  --blue-bright: #5B83FF;
+  --blue-wash: #EBF0FF;
+  --warn-wash: #FFF5E5;
+  --ok-wash: #E7F7EE;
+  --error: #C2261B;
+
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-clinic: "Cormorant Garamond", "Times New Roman", serif;
+
+  --wrap: 1180px;
+  --gutter: clamp(20px, 4vw, 40px);
+  --radius: 14px;
+  --header-h: 68px;
+  color-scheme: light;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--mist); color: var(--ink); font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+svg { display: block; max-width: 100%; }
+a { color: inherit; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+p { margin: 0; }
+:focus-visible { outline: 2px solid var(--blue-bright); outline-offset: 3px; border-radius: 4px; }
+.wrap { width: 100%; max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
+.display { font-family: var(--font-display); font-stretch: 125%; font-variation-settings: "wdth" 125; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; line-height: 1; }
+.eyebrow { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue); display: inline-flex; align-items: center; gap: 10px; }
+.eyebrow::before { content: ""; width: 18px; height: 2px; background: currentColor; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 50px; padding: 0 24px; border-radius: 999px; border: 1px solid transparent; font: 600 0.98rem/1 var(--font-body); text-decoration: none; cursor: pointer; transition: background-color .2s, transform .2s; }
+.btn-primary { background: var(--blue); color: #fff; box-shadow: 0 8px 24px -10px rgba(31,79,255,.7); }
+.btn-primary:hover { background: #1640E0; transform: translateY(-1px); }
+.btn-dark { background: var(--ink); color: #fff; }
+.btn-dark:hover { background: #1B1F2B; }
+.btn[disabled] { opacity: .55; cursor: not-allowed; transform: none; }
+@media (prefers-reduced-motion: reduce) { .btn { transition: none; } .btn:hover { transform: none; } }
+
+/* Header (matches homepage) */
+.site-header { position: sticky; top: 0; z-index: 50; background: rgba(7,8,11,.92); backdrop-filter: saturate(140%) blur(14px); -webkit-backdrop-filter: saturate(140%) blur(14px); border-bottom: 1px solid rgba(255,255,255,.08); color: #fff; }
+.header-row { height: var(--header-h); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.logo { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: #fff; }
+.logo-mark { width: 34px; height: 34px; border-radius: 9px; background: var(--blue); display: grid; place-items: center; flex: none; }
+.logo-mark svg { width: 20px; height: 20px; }
+.logo-word { font-family: var(--font-display); font-stretch: 125%; font-variation-settings: "wdth" 125; font-weight: 800; font-size: 1.05rem; letter-spacing: 0.02em; }
+.logo-word span { font-weight: 400; opacity: .72; margin-left: 4px; }
+.header-links { display: flex; align-items: center; gap: 22px; }
+.header-links a.back { text-decoration: none; font-size: 0.94rem; color: rgba(255,255,255,.76); }
+.header-links a.back:hover { color: #fff; }
+.header-links .btn { min-height: 42px; padding: 0 18px; font-size: 0.9rem; }
+@media (max-width: 640px) { .header-links .btn { display: none; } }
+
+/* Demo banner */
+.demo-banner { background: var(--warn-wash); border-bottom: 1px solid #F2D8AE; color: #5E3800; font-size: 0.9rem; }
+.demo-banner .wrap { display: flex; gap: 10px; align-items: flex-start; padding-top: 11px; padding-bottom: 11px; }
+.demo-banner svg { width: 18px; height: 18px; flex: none; margin-top: 2px; }
+.demo-pill { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: .12em; text-transform: uppercase; background: #5E3800; color: #fff; padding: 3px 8px; border-radius: 999px; flex: none; margin-top: 1px; }
+
+/* Layout */
+.demo { padding: clamp(40px, 6vw, 72px) 0 clamp(56px, 8vw, 96px); }
+.demo-grid { display: grid; gap: 40px; grid-template-columns: 1fr; align-items: start; }
+@media (min-width: 980px) { .demo-grid { grid-template-columns: .9fr 1.1fr; gap: 64px; } .intro { position: sticky; top: calc(var(--header-h) + 32px); } }
+.intro { display: grid; gap: 22px; }
+.intro h1 { font-size: clamp(2rem, 4.6vw, 3.3rem); }
+.intro h1 em { font-style: normal; color: var(--blue); }
+.intro > p { color: var(--muted); max-width: 32em; font-size: 1.08rem; }
+.intro h2 { font-family: var(--font-mono); font-weight: 500; font-size: 0.75rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.try { display: grid; gap: 12px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font: inherit; font-size: 0.9rem; padding: 8px 14px; border-radius: 999px; border: 1px solid #CDD3DF; background: var(--paper); color: var(--ink); cursor: pointer; transition: border-color .2s, background-color .2s, color .2s; text-align: left; }
+.chip:hover { border-color: var(--blue); color: var(--blue); }
+.chip[disabled] { opacity: .5; cursor: not-allowed; }
+.shows { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.shows li { display: grid; grid-template-columns: 22px 1fr; gap: 10px; font-size: 0.97rem; color: #3A4152; }
+.shows svg { width: 18px; height: 18px; color: var(--blue); margin-top: 3px; }
+.cta-card { background: var(--ink); color: #fff; border-radius: var(--radius); padding: 24px; display: grid; gap: 12px; }
+.cta-card p { color: rgba(255,255,255,.72); font-size: 0.97rem; }
+.cta-card .btn { justify-self: start; margin-top: 4px; }
+
+/* Chat panel */
+.chat { background: var(--paper); border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 40px 80px -48px rgba(15,30,90,.45); display: flex; flex-direction: column; height: min(720px, calc(100dvh - 140px)); min-height: 540px; overflow: hidden; }
+.chat-head { display: flex; align-items: center; gap: 14px; padding: 18px 20px; border-bottom: 1px solid var(--line); }
+.monogram { width: 44px; height: 44px; border-radius: 50%; background: var(--ink); color: #fff; display: grid; place-items: center; font-family: var(--font-clinic); font-weight: 600; font-size: 1.15rem; letter-spacing: .04em; flex: none; }
+.clinic-name { font-family: var(--font-clinic); font-weight: 600; font-size: 1.3rem; letter-spacing: .14em; text-transform: uppercase; line-height: 1.1; }
+.clinic-sub { font-size: 0.8rem; color: var(--muted); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.clinic-sub .dot { width: 7px; height: 7px; border-radius: 50%; background: #1BAA62; }
+.tag { margin-left: auto; font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: .1em; text-transform: uppercase; color: #5E3800; background: var(--warn-wash); border: 1px solid #F2D8AE; border-radius: 999px; padding: 4px 9px; flex: none; }
+
+.log { flex: 1; overflow-y: auto; padding: 22px 20px; display: flex; flex-direction: column; gap: 14px; background: linear-gradient(#FBFCFE, #F6F8FC); overscroll-behavior: contain; }
+.msg { max-width: 86%; padding: 12px 15px; border-radius: 16px; font-size: 0.97rem; line-height: 1.55; overflow-wrap: anywhere; }
+.msg p + p, .msg p + ul, .msg ul + p { margin-top: 8px; }
+.msg ul { margin: 6px 0 0; padding-left: 18px; }
+.msg li + li { margin-top: 2px; }
+.msg.bot { background: var(--paper); border: 1px solid var(--line); border-bottom-left-radius: 5px; align-self: flex-start; }
+.msg.user { background: var(--blue); color: #fff; border-bottom-right-radius: 5px; align-self: flex-end; }
+.msg.note { align-self: stretch; max-width: none; background: var(--warn-wash); border: 1px solid #F2D8AE; color: #5E3800; font-size: 0.88rem; border-radius: 12px; }
+.msg.note.err { background: #FDECEA; border-color: #F5C3BE; color: #7A140D; }
+.msg.ok { align-self: stretch; max-width: none; background: var(--ok-wash); border: 1px solid #BFE6D0; color: #064A29; border-radius: 12px; font-size: 0.93rem; }
+.who { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: .1em; text-transform: uppercase; color: #9AA1B2; margin-bottom: 4px; }
+.typing { display: inline-flex; gap: 5px; padding: 4px 2px; }
+.typing span { width: 7px; height: 7px; border-radius: 50%; background: #9AA1B2; animation: blink 1.2s infinite ease-in-out; }
+.typing span:nth-child(2) { animation-delay: .15s; } .typing span:nth-child(3) { animation-delay: .3s; }
+@keyframes blink { 0%, 80%, 100% { opacity: .3; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-3px); } }
+@media (prefers-reduced-motion: reduce) { .typing span { animation: none; opacity: .7; } }
+
+/* Booking card inside chat */
+.booking { align-self: stretch; background: var(--paper); border: 1px solid #C9D3F5; border-radius: 16px; padding: 18px; display: grid; gap: 12px; box-shadow: 0 16px 32px -24px rgba(15,30,90,.4); }
+.booking h3 { font-family: var(--font-clinic); font-weight: 600; font-size: 1.25rem; letter-spacing: .04em; }
+.booking .sub { font-size: 0.85rem; color: var(--muted); }
+.bgrid { display: grid; gap: 12px; grid-template-columns: 1fr; }
+@media (min-width: 560px) { .bgrid { grid-template-columns: 1fr 1fr; } .bgrid .full { grid-column: span 2; } }
+.f { display: grid; gap: 5px; }
+.f label { font-size: 0.85rem; font-weight: 600; }
+.f .opt { font-weight: 400; color: var(--muted); }
+.f input, .f select { width: 100%; font: inherit; font-size: 0.95rem; border: 1px solid #CDD3DF; border-radius: 10px; padding: 10px 12px; min-height: 44px; background: var(--paper); color: var(--ink); }
+.f input:focus, .f select:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 4px rgba(31,79,255,.14); }
+.f [aria-invalid="true"] { border-color: var(--error); }
+.f .error { color: var(--error); font-size: 0.8rem; }
+.f .error:empty { display: none; }
+.consent { display: flex; gap: 10px; align-items: flex-start; font-size: 0.85rem; color: #3A4152; }
+.consent input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--blue); flex: none; }
+.booking .btn { min-height: 46px; justify-self: start; }
+
+.compose { border-top: 1px solid var(--line); padding: 14px 16px 12px; display: grid; gap: 10px; background: var(--paper); }
+.compose-row { display: flex; gap: 10px; align-items: flex-end; }
+.compose textarea { flex: 1; font: inherit; font-size: 1rem; border: 1px solid #CDD3DF; border-radius: 14px; padding: 12px 14px; min-height: 48px; max-height: 140px; resize: none; color: var(--ink); background: var(--paper); line-height: 1.4; }
+.compose textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 4px rgba(31,79,255,.14); }
+.send { width: 48px; height: 48px; border-radius: 50%; border: 0; background: var(--blue); color: #fff; display: grid; place-items: center; cursor: pointer; flex: none; transition: background-color .2s; }
+.send:hover { background: #1640E0; }
+.send[disabled] { opacity: .5; cursor: not-allowed; }
+.send svg { width: 20px; height: 20px; }
+.compose-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 0.78rem; color: var(--muted); }
+.link-btn { background: none; border: 0; padding: 0; font: inherit; font-weight: 600; color: var(--blue); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+
+.site-footer { background: var(--ink); color: rgba(255,255,255,.55); padding: 28px 0; font-size: 0.85rem; }
+.site-footer .wrap { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; }
+.site-footer a { color: rgba(255,255,255,.8); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-row">
+    <a class="logo" href="/" aria-label="ZIG Creative homepage">
+      <span class="logo-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h11L5 17h15"/></svg></span>
+      <span class="logo-word">ZIG<span>Creative</span></span>
+    </a>
+    <div class="header-links">
+      <a class="back" href="/">← Back to ZIG Creative</a>
+      <a class="btn btn-primary" href="/#contact">Book a Free Consultation</a>
+    </div>
+  </div>
+</header>
+
+<div class="demo-banner" role="note">
+  <div class="wrap">
+    <span class="demo-pill">Demo</span>
+    <span>Atelier Vela Aesthetics is a <b>fictional clinic</b> created by ZIG Creative. Its treatments, prices and hours are made up. No real appointments are booked or confirmed here.</span>
+  </div>
+</div>
+
+<main class="demo">
+  <div class="wrap demo-grid">
+    <section class="intro" aria-labelledby="demo-title">
+      <span class="eyebrow">AI receptionist demo</span>
+      <h1 class="display" id="demo-title">Meet Vela, an <em>AI receptionist.</em></h1>
+      <p>Vela answers questions about treatments, prices and opening hours for a fictional luxury aesthetics clinic, and collects booking enquiries for the team to confirm. Ask it anything a client might.</p>
+
+      <div class="try">
+        <h2>Try asking</h2>
+        <div class="chips" id="chips">
+          <button class="chip" type="button">What are your opening hours?</button>
+          <button class="chip" type="button">How much is a Signature Glow Facial?</button>
+          <button class="chip" type="button">Do you do lip filler?</button>
+          <button class="chip" type="button">I'd like to book a facial on a Saturday</button>
+          <button class="chip" type="button">Is this a real clinic?</button>
+        </div>
+      </div>
+
+      <div class="try">
+        <h2>What this demo shows</h2>
+        <ul class="shows">
+          <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span>Answers only from the clinic's own information</span></li>
+          <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span>Collects booking enquiries without promising a time</span></li>
+          <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span>Passes medical and suitability questions to a practitioner</span></li>
+        </ul>
+      </div>
+
+      <div class="cta-card">
+        <b>Want one for your business?</b>
+        <p>ZIG Creative tailors AI receptionists to your treatments, policies and tone of voice.</p>
+        <a class="btn btn-primary" href="/#contact">Book a Free Consultation</a>
+      </div>
+    </section>
+
+    <section class="chat" aria-label="Chat with Vela, the AI receptionist demo">
+      <div class="chat-head">
+        <span class="monogram" aria-hidden="true">AV</span>
+        <div>
+          <div class="clinic-name">Atelier Vela</div>
+          <div class="clinic-sub"><span class="dot" aria-hidden="true"></span>Vela · AI receptionist</div>
+        </div>
+        <span class="tag">Demo</span>
+      </div>
+
+      <div class="log" id="log" role="log" aria-live="polite" aria-relevant="additions">
+        <div class="msg bot">
+          <div class="who">Vela · AI</div>
+          <p>Welcome to Atelier Vela Aesthetics. I'm Vela, the clinic's AI receptionist.</p>
+          <p>I can help with treatments, prices and opening hours, or take a booking enquiry for the team. How can I help today?</p>
+        </div>
+      </div>
+
+      <form class="compose" id="compose">
+        <label class="sr-only" for="chat-input">Message Vela</label>
+        <div class="compose-row">
+          <textarea id="chat-input" rows="1" maxlength="800" placeholder="Ask about treatments, prices or hours…" autocomplete="off"></textarea>
+          <button class="send" id="send-btn" type="submit" aria-label="Send message">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+        <div class="compose-foot">
+          <span>AI can make mistakes. Please don't share medical details.</span>
+          <button type="button" class="link-btn" id="open-booking">Request an appointment</button>
+        </div>
+      </form>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>© <span id="year">2026</span> ZIG Creative. Demo built by ZIG Creative.</span>
+    <a href="/">Back to the ZIG Creative website</a>
+  </div>
+</footer>
+
+<script>
+/* =========================================================
+   DEMO SETTINGS
+   DEMO_ENQUIRY_ENDPOINT: leave empty so demo booking enquiries
+   are NOT sent anywhere (recommended for a fictional clinic).
+   To receive demo enquiries by email, paste a separate
+   Formspree endpoint here, e.g. "https://formspree.io/f/xxxxxxxx".
+   ========================================================= */
+const DEMO_ENQUIRY_ENDPOINT = "";
+const CHAT_API = "/api/receptionist";
+const MAX_USER_MESSAGES = 12;
+
+const TREATMENTS = [
+  "Skin consultation",
+  "Medical aesthetics consultation",
+  "Signature Glow Facial",
+  "Express Glow Facial",
+  "Light chemical peel",
+  "Microneedling",
+  "LED light therapy",
+  "Dermal filler (lips)",
+  "Anti-wrinkle treatment (consultation)",
+  "Not sure yet, I'd like advice"
+];
+
+(function () {
+  "use strict";
+  const log = document.getElementById("log");
+  const form = document.getElementById("compose");
+  const input = document.getElementById("chat-input");
+  const sendBtn = document.getElementById("send-btn");
+  const chips = Array.from(document.querySelectorAll(".chip"));
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const history = [];          // { role, content } sent to the server
+  let userCount = 0;
+  let busy = false;
+  let bookingOpen = false;
+
+  /* ---------- Rendering ---------- */
+  function esc(s) { return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+  function inline(s) { return esc(s).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>"); }
+  function format(text) {
+    const lines = text.split(/\n/);
+    let html = "", list = false, para = [];
+    const flush = () => { if (para.length) { html += "<p>" + para.map(inline).join("<br>") + "</p>"; para = []; } };
+    for (const raw of lines) {
+      const line = raw.trim();
+      const m = line.match(/^[-•*]\s+(.*)$/);
+      if (m) { flush(); if (!list) { html += "<ul>"; list = true; } html += "<li>" + inline(m[1]) + "</li>"; continue; }
+      if (list) { html += "</ul>"; list = false; }
+      if (!line) { flush(); continue; }
+      para.push(line);
+    }
+    flush(); if (list) html += "</ul>";
+    return html;
+  }
+  function scrollDown() { log.scrollTo({ top: log.scrollHeight, behavior: reduceMotion.matches ? "auto" : "smooth" }); }
+  function addMsg(kind, html, who) {
+    const el = document.createElement("div");
+    el.className = "msg " + kind;
+    el.innerHTML = (who ? '<div class="who">' + who + "</div>" : "") + html;
+    log.appendChild(el); scrollDown();
+    return el;
+  }
+  function addTyping() {
+    const el = addMsg("bot", '<span class="typing" aria-label="Vela is typing"><span></span><span></span><span></span></span>', "Vela · AI");
+    return el;
+  }
+  function setBusy(b) {
+    busy = b;
+    sendBtn.disabled = b || userCount >= MAX_USER_MESSAGES;
+    chips.forEach((c) => (c.disabled = b || userCount >= MAX_USER_MESSAGES));
+  }
+
+  const ERRORS = {
+    not_configured: "The AI receptionist isn't connected yet. The site owner needs to add the ANTHROPIC_API_KEY setting in Netlify. You can still try the booking enquiry form.",
+    busy: "Vela is very busy right now. Please try again in a moment.",
+    bad_key: "The AI receptionist couldn't sign in to its AI service. The site owner should check the API key in Netlify.",
+    network: "Couldn't reach the AI receptionist. Check your connection and try again.",
+    default: "Sorry, something went wrong on our side. Please try again in a moment."
+  };
+
+  /* ---------- Chat ---------- */
+  async function send(text) {
+    text = text.trim();
+    if (!text || busy) return;
+    if (userCount >= MAX_USER_MESSAGES) return;
+    userCount++;
+    addMsg("user", format(text));
+    history.push({ role: "user", content: text });
+    input.value = ""; autosize();
+    setBusy(true);
+    const typing = addTyping();
+    try {
+      const res = await fetch(CHAT_API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: history })
+      });
+      let data = {};
+      try { data = await res.json(); } catch (_) {}
+      typing.remove();
+      if (!res.ok || !data.reply) throw Object.assign(new Error("api"), { code: data.error || (res.status === 404 ? "not_configured" : "default") });
+
+      const wantsForm = data.reply.includes("[[BOOKING_FORM]]");
+      const reply = data.reply.replace(/\[\[BOOKING_FORM\]\]/g, "").trim();
+      history.push({ role: "assistant", content: reply || "I can take a booking enquiry for you." });
+      if (reply) addMsg("bot", format(reply), "Vela · AI");
+      if (wantsForm) openBooking();
+    } catch (err) {
+      typing.remove();
+      history.pop(); // drop the unanswered message so the conversation stays valid
+      const code = err.code || (err instanceof TypeError ? "network" : "default");
+      addMsg("note err", "<p>" + esc(ERRORS[code] || ERRORS.default) + "</p>");
+    } finally {
+      setBusy(false);
+      if (userCount >= MAX_USER_MESSAGES) {
+        input.disabled = true;
+        input.placeholder = "Demo message limit reached. Refresh to start again.";
+        addMsg("note", "<p>That's the end of this demo conversation. Refresh the page to start a new one.</p>");
+      }
+    }
+  }
+
+  form.addEventListener("submit", (e) => { e.preventDefault(); send(input.value); });
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(input.value); }
+  });
+  function autosize() { input.style.height = "auto"; input.style.height = Math.min(input.scrollHeight, 140) + "px"; }
+  input.addEventListener("input", autosize);
+  chips.forEach((c) => c.addEventListener("click", () => {
+    // On phones the chat sits below the suggestions, so bring it into view
+    if (window.matchMedia("(max-width: 979px)").matches) {
+      document.querySelector(".chat").scrollIntoView({ behavior: reduceMotion.matches ? "auto" : "smooth", block: "start" });
+    }
+    send(c.textContent);
+  }));
+
+  /* ---------- Booking enquiry card ---------- */
+  document.getElementById("open-booking").addEventListener("click", openBooking);
+
+  function openBooking() {
+    if (bookingOpen) { const f = log.querySelector(".booking input"); if (f) f.focus(); return; }
+    bookingOpen = true;
+    const card = document.createElement("form");
+    card.className = "booking";
+    card.noValidate = true;
+    card.setAttribute("aria-label", "Booking enquiry form");
+    card.innerHTML =
+      '<h3>Booking enquiry</h3>' +
+      '<p class="sub">The team will contact you to confirm a time. This is not a confirmed appointment.</p>' +
+      '<div class="bgrid">' +
+        field("bk-name", "Full name", '<input id="bk-name" type="text" autocomplete="name">') +
+        field("bk-email", "Email address", '<input id="bk-email" type="email" autocomplete="email" inputmode="email">') +
+        field("bk-phone", 'Phone <span class="opt">(optional)</span>', '<input id="bk-phone" type="tel" autocomplete="tel" inputmode="tel">') +
+        field("bk-treatment", "Treatment", '<select id="bk-treatment"><option value="">Choose a treatment</option>' + TREATMENTS.map((t) => "<option>" + esc(t) + "</option>").join("") + "</select>") +
+        field("bk-when", 'Preferred days or times <span class="opt">(optional)</span>', '<input id="bk-when" type="text" placeholder="e.g. Saturday mornings">', "full") +
+        '<div class="f full"><label class="consent" for="bk-consent"><input type="checkbox" id="bk-consent"><span>I&rsquo;m happy for the clinic to contact me about this enquiry.</span></label><span class="error" id="bk-consent-error"></span></div>' +
+      "</div>" +
+      '<button class="btn btn-dark" type="submit">Send enquiry</button>';
+    log.appendChild(card); scrollDown();
+    card.querySelector("#bk-name").focus({ preventScroll: true });
+    card.addEventListener("submit", (e) => { e.preventDefault(); submitBooking(card); });
+  }
+  function field(id, label, control, extra) {
+    return '<div class="f ' + (extra || "") + '"><label for="' + id + '">' + label + "</label>" + control + '<span class="error" id="' + id + '-error"></span></div>';
+  }
+  function setErr(id, msg) {
+    const el = document.getElementById(id), er = document.getElementById(id + "-error");
+    if (msg) { el.setAttribute("aria-invalid", "true"); er.textContent = msg; } else { el.removeAttribute("aria-invalid"); er.textContent = ""; }
+    return !msg;
+  }
+  async function submitBooking(card) {
+    const v = (id) => document.getElementById(id).value.trim();
+    const checks = [
+      setErr("bk-name", v("bk-name").length >= 2 ? "" : "Please enter your name."),
+      setErr("bk-email", /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v("bk-email")) ? "" : "Please enter a valid email address."),
+      setErr("bk-phone", v("bk-phone") === "" || /^[+()\d\s-]{7,20}$/.test(v("bk-phone")) ? "" : "Please enter a valid phone number, or leave it blank."),
+      setErr("bk-treatment", v("bk-treatment") ? "" : "Please choose a treatment."),
+      setErr("bk-consent", document.getElementById("bk-consent").checked ? "" : "Please confirm the clinic can contact you.")
+    ];
+    if (checks.includes(false)) { const bad = card.querySelector('[aria-invalid="true"]'); if (bad) bad.focus(); return; }
+
+    const enquiry = {
+      "_subject": "Demo booking enquiry: Atelier Vela (" + v("bk-treatment") + ")",
+      "Full name": v("bk-name"),
+      "email": v("bk-email"),
+      "Phone": v("bk-phone") || "Not provided",
+      "Treatment": v("bk-treatment"),
+      "Preferred days or times": v("bk-when") || "Not given",
+      "Source": "ZIG Creative AI receptionist demo (fictional clinic)"
+    };
+    const btn = card.querySelector("button[type=submit]");
+    const endpoint = DEMO_ENQUIRY_ENDPOINT.trim();
+
+    if (!endpoint) {
+      const firstName = enquiry["Full name"].split(" ")[0];
+      card.remove(); bookingOpen = false;
+      addMsg("ok",
+        "<p><b>Enquiry captured (demo only).</b> Nothing has been sent and no appointment has been booked.</p>" +
+        "<p>For a real clinic, this enquiry would go straight to the team's inbox or booking system, and they would contact " + esc(firstName) + " to confirm a time for " + esc(enquiry["Treatment"]) + ".</p>");
+      return;
+    }
+
+    btn.disabled = true; btn.textContent = "Sending…";
+    try {
+      const res = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(enquiry) });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      card.remove(); bookingOpen = false;
+      addMsg("ok", "<p><b>Thank you, your enquiry has been sent.</b> The team will be in touch to confirm a time. Your appointment is not confirmed until they do.</p>");
+    } catch (_) {
+      btn.disabled = false; btn.textContent = "Send enquiry";
+      addMsg("note err", "<p>Sorry, your enquiry couldn't be sent. Your details are still in the form, so please try again.</p>");
+    }
+  }
+})();
+</script>
+</body>
+</html>

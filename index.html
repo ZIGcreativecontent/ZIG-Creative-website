@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZIG Creative</title>
+<meta name="description" content="ZIG Creative is an AI automation agency in Scotland helping salons, clinics, dental practices and wellness businesses simplify enquiries, bookings and follow-ups.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#07080B">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Instrument+Sans:wght@400..600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Layout: dark hero and About band bookend bright white content; left-aligned editorial grid, one electric-blue accent */
+  --ink: #07080B;
+  --ink-2: #10131B;
+  --paper: #FFFFFF;
+  --mist: #F3F5FA;
+  --line: #E1E5EE;
+  --muted: #586074;
+  --blue: #1F4FFF;
+  --blue-bright: #5B83FF;
+  --blue-wash: #EBF0FF;
+  --warn: #9A5B00;
+  --warn-wash: #FFF5E5;
+  --ok: #0B7A43;
+  --ok-wash: #E7F7EE;
+  --error: #C2261B;
+
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --wrap: 1180px;
+  --gutter: clamp(20px, 4vw, 40px);
+  --radius: 14px;
+  --header-h: 68px;
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+img, svg { max-width: 100%; display: block; }
+a { color: inherit; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+p { margin: 0; }
+section[id] { scroll-margin-top: calc(var(--header-h) + 8px); }
+:focus-visible { outline: 2px solid var(--blue-bright); outline-offset: 3px; border-radius: 4px; }
+
+.wrap { width: 100%; max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
+.display {
+  font-family: var(--font-display);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--blue);
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.eyebrow::before { content: ""; width: 18px; height: 2px; background: currentColor; }
+.skip { position: absolute; left: -9999px; top: 8px; background: var(--paper); color: var(--ink); padding: 8px 14px; z-index: 100; border-radius: 6px; }
+.skip:focus { left: 8px; }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 50px; padding: 0 24px;
+  border-radius: 999px; border: 1px solid transparent;
+  font: 600 0.98rem/1 var(--font-body);
+  text-decoration: none; cursor: pointer;
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+.btn svg { width: 16px; height: 16px; transition: transform .2s ease; }
+.btn:hover svg { transform: translateX(3px); }
+.btn-primary { background: var(--blue); color: #fff; box-shadow: 0 8px 24px -10px rgba(31,79,255,.7); }
+.btn-primary:hover { background: #1640E0; transform: translateY(-1px); }
+.btn-ghost-dark { color: #fff; border-color: rgba(255,255,255,.28); background: rgba(255,255,255,.03); }
+.btn-ghost-dark:hover { border-color: #fff; background: rgba(255,255,255,.08); }
+.btn-dark { background: var(--ink); color: #fff; }
+.btn-dark:hover { background: #1B1F2B; transform: translateY(-1px); }
+@media (prefers-reduced-motion: reduce) { .btn, .btn svg { transition: none; } .btn:hover, .btn:hover svg { transform: none; } }
+
+/* Header */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(7,8,11,.86);
+  backdrop-filter: saturate(140%) blur(14px);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  color: #fff;
+}
+.header-row { height: var(--header-h); display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.logo { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: #fff; }
+.logo-mark { width: 34px; height: 34px; border-radius: 9px; background: var(--blue); display: grid; place-items: center; flex: none; }
+.logo-mark svg { width: 20px; height: 20px; }
+.logo-word { font-family: var(--font-display); font-stretch: 125%; font-variation-settings: "wdth" 125; font-weight: 800; font-size: 1.05rem; letter-spacing: 0.02em; }
+.logo-word span { font-weight: 400; opacity: .72; margin-left: 4px; }
+.nav { display: flex; align-items: center; gap: 30px; }
+.nav-links { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; }
+.nav-links a { text-decoration: none; font-size: 0.94rem; color: rgba(255,255,255,.76); transition: color .2s; }
+.nav-links a:hover { color: #fff; }
+.nav .btn { min-height: 42px; padding: 0 18px; font-size: 0.9rem; }
+.menu-toggle { display: none; background: none; border: 1px solid rgba(255,255,255,.2); color: #fff; width: 44px; height: 44px; border-radius: 10px; cursor: pointer; }
+.menu-toggle svg { width: 20px; height: 20px; margin: auto; }
+@media (max-width: 900px) {
+  .menu-toggle { display: grid; place-items: center; }
+  .nav { position: absolute; left: 0; right: 0; top: var(--header-h); flex-direction: column; align-items: stretch; gap: 0;
+    background: var(--ink); border-bottom: 1px solid rgba(255,255,255,.1); padding: 8px var(--gutter) 22px; display: none; }
+  .nav.open { display: flex; }
+  .nav-links { flex-direction: column; gap: 0; }
+  .nav-links a { display: block; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.08); font-size: 1.05rem; color: #fff; }
+  .nav .btn { margin-top: 18px; min-height: 50px; }
+}
+
+/* Hero */
+.hero { position: relative; background: var(--ink); color: #fff; overflow: hidden; isolation: isolate; }
+.hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2; }
+.hero::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(60% 70% at 85% 20%, rgba(31,79,255,.28), transparent 70%),
+    linear-gradient(90deg, rgba(7,8,11,.94) 0%, rgba(7,8,11,.72) 45%, rgba(7,8,11,.35) 100%);
+}
+.hero-grid { display: grid; grid-template-columns: 1fr; gap: 56px; padding-top: clamp(64px, 10vw, 120px); padding-bottom: clamp(64px, 9vw, 112px); align-items: center; }
+@media (min-width: 980px) { .hero-grid { grid-template-columns: 1.25fr .75fr; } }
+.hero .eyebrow { color: var(--blue-bright); }
+.hero h1 { font-size: clamp(2.05rem, 6.2vw, 4.9rem); margin-top: 22px; }
+.hero h1 em { font-style: normal; color: var(--blue-bright); }
+.hero-sub { margin-top: 26px; max-width: 34em; font-size: clamp(1.05rem, 1.6vw, 1.2rem); color: rgba(255,255,255,.78); }
+.hero-ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 36px; }
+.built-for { margin-top: 48px; display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; font-size: 0.9rem; color: rgba(255,255,255,.6); }
+.built-for strong { font-family: var(--font-mono); font-weight: 400; font-size: 0.72rem; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.45); }
+.built-for span { display: inline-flex; align-items: center; gap: 8px; }
+.built-for span::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--blue-bright); }
+
+/* Workflow panel */
+.flow {
+  background: rgba(16,19,27,.78); border: 1px solid rgba(255,255,255,.1);
+  border-radius: 18px; padding: 22px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 30px 80px -30px rgba(0,0,0,.8);
+}
+.flow-head { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.5); padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,.08); }
+.flow-head i { font-style: normal; display: inline-flex; align-items: center; gap: 6px; color: var(--blue-bright); }
+.flow-head i::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; box-shadow: 0 0 0 4px rgba(91,131,255,.18); }
+.flow ol { list-style: none; margin: 0; padding: 8px 0 0; position: relative; }
+.flow ol::before { content: ""; position: absolute; left: 17px; top: 28px; bottom: 28px; width: 1px; background: rgba(255,255,255,.12); }
+.flow-pulse { position: absolute; left: 14px; top: 28px; width: 7px; height: 7px; border-radius: 50%; background: var(--blue-bright); box-shadow: 0 0 12px 2px rgba(91,131,255,.7); animation: pulse-down 5s cubic-bezier(.6,0,.4,1) infinite; }
+@keyframes pulse-down { 0% { transform: translateY(0); opacity: 0; } 8% { opacity: 1; } 88% { opacity: 1; } 100% { transform: translateY(var(--travel, 220px)); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .flow-pulse { display: none; } }
+.flow li { display: grid; grid-template-columns: 36px 1fr auto; gap: 14px; align-items: center; padding: 12px 0; position: relative; }
+.flow-dot { width: 35px; height: 35px; border-radius: 10px; background: var(--ink); border: 1px solid rgba(255,255,255,.14); display: grid; place-items: center; color: var(--blue-bright); }
+.flow-dot svg { width: 16px; height: 16px; }
+.flow li b { display: block; font-weight: 600; font-size: 0.95rem; }
+.flow li small { display: block; color: rgba(255,255,255,.5); font-size: 0.8rem; }
+.flow-tag { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.55); border: 1px solid rgba(255,255,255,.14); border-radius: 999px; padding: 4px 9px; white-space: nowrap; }
+.flow-note { margin-top: 10px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.08); font-size: 0.78rem; color: rgba(255,255,255,.42); }
+@media (max-width: 420px) { .flow-tag { display: none; } .flow li { grid-template-columns: 36px 1fr; } }
+
+/* Section scaffolding */
+.section { padding: clamp(72px, 10vw, 120px) 0; }
+.section-head { display: grid; gap: 18px; max-width: 760px; margin-bottom: clamp(40px, 6vw, 64px); }
+.section-head h2 { font-size: clamp(1.75rem, 4vw, 2.9rem); }
+.section-head p { color: var(--muted); max-width: 36em; font-size: 1.08rem; }
+
+/* Solutions */
+.cards { display: grid; gap: 20px; grid-template-columns: 1fr; }
+@media (min-width: 720px) { .cards { grid-template-columns: repeat(2, 1fr); } }
+.card {
+  position: relative; display: flex; flex-direction: column; gap: 18px;
+  padding: 32px; border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--paper); overflow: hidden;
+  transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+}
+.card::before { content: ""; position: absolute; left: 0; top: 0; height: 3px; width: 100%; background: var(--blue); transform: scaleX(0); transform-origin: left; transition: transform .45s cubic-bezier(.2,.7,.2,1); }
+.card:hover { transform: translateY(-4px); border-color: #C9D3F5; box-shadow: 0 24px 48px -28px rgba(15,30,90,.35); }
+.card:hover::before { transform: scaleX(1); }
+.card:hover .card-icon { background: var(--blue); color: #fff; }
+@media (prefers-reduced-motion: reduce) { .card, .card::before { transition: none; } .card:hover { transform: none; } }
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; }
+.card-icon { width: 54px; height: 54px; border-radius: 14px; background: var(--blue-wash); color: var(--blue); display: grid; place-items: center; transition: background-color .3s, color .3s; }
+.card-icon svg { width: 26px; height: 26px; }
+.card-num { font-family: var(--font-mono); font-size: 0.78rem; color: #9AA1B2; letter-spacing: .08em; }
+.card h3 { font-family: var(--font-display); font-stretch: 112%; font-variation-settings: "wdth" 112; font-weight: 700; font-size: 1.35rem; line-height: 1.2; letter-spacing: -0.01em; }
+.card p { color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 6px; list-style: none; padding-left: 0; margin-bottom: 0; }
+.chips li { font-size: 0.8rem; padding: 5px 11px; border-radius: 999px; background: var(--mist); color: #3A4152; }
+
+/* How it works */
+.how { background: var(--mist); }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 20px; grid-template-columns: 1fr; counter-reset: step; }
+@media (min-width: 860px) { .steps { grid-template-columns: repeat(3, 1fr); gap: 0; } }
+.step { position: relative; padding: 32px 28px; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); }
+@media (min-width: 860px) {
+  .step { border-radius: 0; border-right-width: 0; }
+  .step:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+  .step:last-child { border-radius: 0 var(--radius) var(--radius) 0; border-right-width: 1px; }
+}
+.step-num { display: flex; align-items: center; gap: 14px; font-family: var(--font-mono); font-size: 0.8rem; color: var(--blue); letter-spacing: .1em; }
+.step-num::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--blue), transparent); opacity: .35; }
+.step h3 { margin-top: 26px; font-size: 1.6rem; }
+.step p { margin-top: 12px; color: var(--muted); }
+
+/* About */
+.about { background: var(--ink); color: #fff; position: relative; overflow: hidden; }
+.about::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px); background-size: 56px 56px; mask-image: radial-gradient(70% 80% at 80% 50%, #000 0%, transparent 75%); -webkit-mask-image: radial-gradient(70% 80% at 80% 50%, #000 0%, transparent 75%); pointer-events: none; }
+.about-grid { position: relative; display: grid; gap: 48px; grid-template-columns: 1fr; }
+@media (min-width: 940px) { .about-grid { grid-template-columns: 1.05fr 1fr; gap: 80px; align-items: start; } }
+.about .eyebrow { color: var(--blue-bright); }
+.about h2 { margin-top: 20px; font-size: clamp(2rem, 4.6vw, 3.4rem); }
+.about h2 em { font-style: normal; color: var(--blue-bright); }
+.about-copy { display: grid; gap: 20px; color: rgba(255,255,255,.78); font-size: 1.1rem; max-width: 34em; }
+.about-copy p:last-of-type { color: #fff; }
+.values { list-style: none; padding: 0; margin: 28px 0 0; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid rgba(255,255,255,.12); }
+.values li { padding: 18px 12px 0 0; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.6); }
+.values li b { display: block; font-family: var(--font-body); font-size: 1rem; letter-spacing: 0; text-transform: none; color: #fff; font-weight: 600; margin-top: 6px; }
+@media (max-width: 480px) { .values { grid-template-columns: 1fr; } .values li { padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.08); } }
+
+/* Pricing */
+.pricing-box { display: grid; grid-template-columns: 1fr; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; }
+@media (min-width: 900px) { .pricing-box { grid-template-columns: 1.1fr .9fr; } }
+.pricing-main { padding: clamp(32px, 5vw, 56px); display: grid; gap: 20px; align-content: start; }
+.pricing-main h2 { font-size: clamp(1.75rem, 4vw, 2.7rem); }
+.pricing-main p { color: var(--muted); max-width: 32em; }
+.pricing-main .btn { justify-self: start; margin-top: 10px; }
+.pricing-side { background: var(--mist); padding: clamp(32px, 5vw, 56px); border-top: 1px solid var(--line); }
+@media (min-width: 900px) { .pricing-side { border-top: 0; border-left: 1px solid var(--line); } }
+.pricing-side h3 { font-family: var(--font-mono); font-weight: 500; font-size: 0.75rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.factors { list-style: none; margin: 20px 0 0; padding: 0; display: grid; }
+.factors li { display: grid; grid-template-columns: 28px 1fr; gap: 12px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.factors li:last-child { border-bottom: 0; }
+.factors svg { width: 20px; height: 20px; color: var(--blue); margin-top: 3px; }
+.factors b { display: block; font-weight: 600; }
+.factors span { color: var(--muted); font-size: 0.95rem; }
+
+/* FAQ */
+.faq-grid { display: grid; gap: 40px; grid-template-columns: 1fr; align-items: start; }
+.faq-grid .section-head { align-content: start; }
+@media (min-width: 940px) { .faq-grid { grid-template-columns: .8fr 1.2fr; gap: 72px; } }
+.faq-list { border-top: 1px solid var(--line); }
+.faq-list details { border-bottom: 1px solid var(--line); }
+.faq-list summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 22px 0; font-weight: 600; font-size: 1.08rem; }
+.faq-list summary::-webkit-details-marker { display: none; }
+.faq-list summary::after { content: ""; flex: none; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--line); background: var(--paper) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%231F4FFF' stroke-width='1.8' stroke-linecap='round'%3E%3Cpath d='M10 5v10M5 10h10'/%3E%3C/svg%3E") center / 14px no-repeat; transition: transform .25s ease, background-color .25s; }
+.faq-list details[open] summary::after { transform: rotate(45deg); background-color: var(--blue-wash); }
+.faq-list summary:hover { color: var(--blue); }
+.faq-list details p { color: var(--muted); padding: 0 48px 24px 0; max-width: 40em; }
+@media (prefers-reduced-motion: reduce) { .faq-list summary::after { transition: none; } }
+
+/* Contact */
+.contact { background: var(--mist); }
+.contact-grid { display: grid; gap: 48px; grid-template-columns: 1fr; }
+@media (min-width: 980px) { .contact-grid { grid-template-columns: .8fr 1.2fr; gap: 72px; } }
+.contact-intro { display: grid; gap: 18px; align-content: start; }
+.contact-intro h2 { font-size: clamp(1.75rem, 4vw, 2.7rem); }
+.contact-intro p { color: var(--muted); }
+.contact-meta { margin-top: 12px; display: grid; gap: 14px; }
+.contact-meta div { display: grid; grid-template-columns: 22px 1fr; gap: 12px; color: #3A4152; font-size: 0.97rem; }
+.contact-meta svg { width: 20px; height: 20px; color: var(--blue); margin-top: 2px; }
+
+.form-card { background: var(--paper); border: 1px solid var(--line); border-radius: 20px; padding: clamp(24px, 4vw, 44px); box-shadow: 0 30px 60px -40px rgba(15,30,90,.3); }
+.form-status { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: 12px; font-size: 0.9rem; line-height: 1.5; margin-bottom: 28px; }
+.form-status svg { width: 18px; height: 18px; flex: none; margin-top: 2px; }
+.form-status.is-preview { background: var(--warn-wash); color: #5E3800; border: 1px solid #F2D8AE; }
+.form-status.is-live { background: var(--ok-wash); color: #064A29; border: 1px solid #BFE6D0; }
+.form-status b { display: block; }
+.fields { display: grid; gap: 20px; grid-template-columns: 1fr; }
+@media (min-width: 640px) { .fields { grid-template-columns: 1fr 1fr; } .span-2 { grid-column: span 2; } }
+.field { display: grid; gap: 8px; align-content: start; }
+.field label, .field legend { font-weight: 600; font-size: 0.92rem; }
+.field label .opt, .field legend .opt { font-weight: 400; color: var(--muted); }
+.req { color: var(--blue); }
+.field input, .field select, .field textarea {
+  width: 100%; font: inherit; font-size: 1rem; color: var(--ink);
+  background: var(--paper); border: 1px solid #CDD3DF; border-radius: 10px;
+  padding: 13px 14px; min-height: 50px;
+  transition: border-color .2s, box-shadow .2s;
+}
+.field select { appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23586074' stroke-width='1.8'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; background-size: 18px; padding-right: 42px; }
+.field textarea { min-height: 140px; resize: vertical; }
+.field input:hover, .field select:hover, .field textarea:hover { border-color: #A9B2C4; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 4px rgba(31,79,255,.14); }
+.field [aria-invalid="true"] { border-color: var(--error); }
+.field fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+.field legend { padding: 0; margin-bottom: 10px; }
+.checks { display: grid; gap: 10px; grid-template-columns: 1fr; }
+@media (min-width: 640px) { .checks { grid-template-columns: 1fr 1fr; } }
+.check { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid #CDD3DF; border-radius: 10px; cursor: pointer; font-size: 0.95rem; transition: border-color .2s, background-color .2s; }
+.check:hover { border-color: #A9B2C4; }
+.check input { width: 18px; height: 18px; accent-color: var(--blue); flex: none; margin: 0; }
+.check:has(input:checked) { border-color: var(--blue); background: var(--blue-wash); }
+.fieldset-invalid .check { border-color: var(--error); }
+.consent { display: flex; gap: 12px; align-items: flex-start; font-size: 0.92rem; color: #3A4152; }
+.consent input { width: 18px; height: 18px; margin: 3px 0 0; accent-color: var(--blue); flex: none; }
+.link-btn { background: none; border: 0; padding: 0; font: inherit; color: var(--blue); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+.error { color: var(--error); font-size: 0.85rem; min-height: 0; }
+.error:empty { display: none; }
+.hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.form-foot { margin-top: 28px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; }
+.form-foot small { color: var(--muted); font-size: 0.85rem; }
+.form-result { margin-top: 22px; padding: 16px 18px; border-radius: 12px; font-size: 0.95rem; }
+.form-result[hidden] { display: none; }
+.form-result.warn { background: var(--warn-wash); color: #5E3800; border: 1px solid #F2D8AE; }
+.form-result.ok { background: var(--ok-wash); color: #064A29; border: 1px solid #BFE6D0; }
+.form-result.err { background: #FDECEA; color: #7A140D; border: 1px solid #F5C3BE; }
+.btn[disabled] { opacity: .6; cursor: progress; transform: none; }
+
+/* Footer */
+.site-footer { background: var(--ink); color: rgba(255,255,255,.7); padding: 64px 0 32px; }
+.footer-top { display: grid; gap: 40px; grid-template-columns: 1fr; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,.1); }
+@media (min-width: 760px) { .footer-top { grid-template-columns: 1.4fr 1fr 1fr; } }
+.footer-brand p { margin-top: 16px; color: rgba(255,255,255,.6); max-width: 22em; }
+.footer-tag { font-family: var(--font-display); font-stretch: 125%; font-variation-settings: "wdth" 125; font-weight: 700; text-transform: uppercase; font-size: 0.95rem; color: #fff; margin-top: 18px; letter-spacing: .01em; }
+.footer-col h4 { margin: 0 0 14px; font-family: var(--font-mono); font-weight: 400; font-size: 0.72rem; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.45); }
+.footer-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.footer-col a, .footer-col button { color: rgba(255,255,255,.8); text-decoration: none; background: none; border: 0; padding: 0; font: inherit; cursor: pointer; text-align: left; }
+.footer-col a:hover, .footer-col button:hover { color: #fff; }
+.footer-bottom { padding-top: 24px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 0.85rem; color: rgba(255,255,255,.45); }
+
+/* Policy dialog */
+dialog { border: 0; border-radius: 18px; padding: 0; max-width: min(520px, calc(100vw - 32px)); width: 100%; color: var(--ink); background: var(--paper); box-shadow: 0 40px 80px -20px rgba(0,0,0,.5); }
+dialog::backdrop { background: rgba(7,8,11,.6); backdrop-filter: blur(3px); }
+.dlg { padding: 32px; display: grid; gap: 14px; }
+.dlg h2 { font-size: 1.4rem; font-family: var(--font-display); font-stretch: 112%; font-variation-settings: "wdth" 112; font-weight: 700; }
+.dlg p { color: var(--muted); }
+.dlg .btn { justify-self: start; margin-top: 8px; min-height: 44px; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap header-row">
+    <a class="logo" href="#home" aria-label="ZIG Creative, back to top">
+      <span class="logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h11L5 17h15"/></svg>
+      </span>
+      <span class="logo-word">ZIG<span>Creative</span></span>
+    </a>
+    <button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <ul class="nav-links">
+        <li><a href="#solutions">Solutions</a></li>
+        <li><a href="#how-it-works">How it works</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <a class="btn btn-primary" href="#contact" data-focus-form>Book a Free Consultation</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- HERO -->
+<section class="hero" id="home" aria-labelledby="hero-title">
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">AI automation agency · Scotland</span>
+      <h1 class="display" id="hero-title">The future of business is <em>automated.</em></h1>
+      <p class="hero-sub">Intelligent AI solutions designed to simplify operations, streamline customer interactions and help your business grow.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="#solutions">Explore Our Solutions
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+        <a class="btn btn-ghost-dark" href="#contact" data-focus-form>Book a Free Consultation</a>
+      </div>
+      <div class="built-for">
+        <strong>Built for</strong>
+        <span>Beauty salons</span>
+        <span>Aesthetic clinics</span>
+        <span>Dental practices</span>
+        <span>Wellness businesses</span>
+      </div>
+    </div>
+
+    <aside class="flow" aria-label="Illustrative example of an automated booking journey">
+      <div class="flow-head"><span>Example workflow</span><i>Automated</i></div>
+      <ol id="flow-list">
+        <span class="flow-pulse" aria-hidden="true"></span>
+        <li>
+          <span class="flow-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4z"/></svg></span>
+          <div><b>New enquiry arrives</b><small>Out of hours, via your website</small></div>
+          <span class="flow-tag">Enquiry</span>
+        </li>
+        <li>
+          <span class="flow-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M5 12H2M22 12h-3M12 21v-3"/><circle cx="12" cy="12" r="5"/></svg></span>
+          <div><b>Question answered</b><small>Details captured and organised</small></div>
+          <span class="flow-tag">Reception</span>
+        </li>
+        <li>
+          <span class="flow-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M9 15l2 2 4-4"/></svg></span>
+          <div><b>Appointment confirmed</b><small>Confirmation and reminder set</small></div>
+          <span class="flow-tag">Booking</span>
+        </li>
+        <li>
+          <span class="flow-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg></span>
+          <div><b>Rebooking prompt</b><small>Follow-up after the visit</small></div>
+          <span class="flow-tag">Retention</span>
+        </li>
+      </ol>
+      <p class="flow-note">An illustration of how our solutions can work together. Every system is tailored to your business.</p>
+    </aside>
+  </div>
+</section>
+
+<!-- SOLUTIONS -->
+<section class="section" id="solutions" aria-labelledby="solutions-title">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Our solutions</span>
+      <h2 class="display" id="solutions-title">Automation built around your appointments</h2>
+      <p>Four focused solutions that take repetitive admin off your team, so more of their time goes to your clients.</p>
+    </div>
+
+    <div class="cards">
+      <article class="card">
+        <div class="card-top">
+          <span class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="3" y="13" width="4" height="6" rx="1.5"/><rect x="17" y="13" width="4" height="6" rx="1.5"/><path d="M19 19c0 1.5-2 2.5-5 2.5"/></svg>
+          </span>
+          <span class="card-num">01</span>
+        </div>
+        <h3>AI Receptionists</h3>
+        <p>AI-powered reception solutions designed to help businesses manage customer enquiries, answer common questions and capture potential bookings.</p>
+        <ul class="chips" aria-label="Covers"><li>Customer enquiries</li><li>Common questions</li><li>Booking capture</li></ul>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <span class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M12 13.5v2.5l1.6 1"/></svg>
+          </span>
+          <span class="card-num">02</span>
+        </div>
+        <h3>Smart Booking &amp; Reminders</h3>
+        <p>Automated booking workflows, appointment confirmations and reminders that help businesses reduce administration and minimise missed appointments.</p>
+        <ul class="chips" aria-label="Covers"><li>Booking workflows</li><li>Confirmations</li><li>Reminders</li></ul>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <span class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18l-7 8v6l-4 2v-8z"/></svg>
+          </span>
+          <span class="card-num">03</span>
+        </div>
+        <h3>AI Enquiry Automation</h3>
+        <p>Intelligent workflows that capture enquiries, organise customer information and support faster responses to potential clients.</p>
+        <ul class="chips" aria-label="Covers"><li>Enquiry capture</li><li>Organised customer info</li><li>Faster responses</li></ul>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <span class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8.7M20 4v4.7h-4.7"/><path d="M20 12a8 8 0 0 1-13.7 5.6L4 15.3M4 20v-4.7h4.7"/></svg>
+          </span>
+          <span class="card-num">04</span>
+        </div>
+        <h3>Customer Follow-Ups &amp; Retention</h3>
+        <p>Automated follow-up messages and rebooking reminders designed to encourage repeat visits and improve customer relationships.</p>
+        <ul class="chips" aria-label="Covers"><li>Follow-up messages</li><li>Rebooking reminders</li><li>Repeat visits</li></ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section how" id="how-it-works" aria-labelledby="how-title">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">How it works</span>
+      <h2 class="display" id="how-title">Three steps from first call to launch</h2>
+    </div>
+    <ol class="steps">
+      <li class="step">
+        <span class="step-num">STEP 01</span>
+        <h3 class="display">Discover</h3>
+        <p>We learn about your business and identify opportunities for automation.</p>
+      </li>
+      <li class="step">
+        <span class="step-num">STEP 02</span>
+        <h3 class="display">Build</h3>
+        <p>We design and configure automation workflows around your requirements.</p>
+      </li>
+      <li class="step">
+        <span class="step-num">STEP 03</span>
+        <h3 class="display">Launch</h3>
+        <p>We test your systems and provide guidance and ongoing support.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section about" id="about" aria-labelledby="about-title">
+  <div class="wrap about-grid">
+    <div>
+      <span class="eyebrow">About ZIG Creative</span>
+      <h2 class="display" id="about-title">Smarter systems. <em>Stronger businesses.</em></h2>
+    </div>
+    <div>
+      <div class="about-copy">
+        <p>At ZIG Creative, we believe businesses should spend less time managing repetitive tasks and more time focusing on their customers.</p>
+        <p>We create tailored AI automation solutions that simplify everyday operations, streamline communication and support business growth.</p>
+        <p>Our mission is to make intelligent automation accessible, practical and easy to use.</p>
+      </div>
+      <ul class="values" aria-label="Our mission">
+        <li>01<b>Accessible</b></li>
+        <li>02<b>Practical</b></li>
+        <li>03<b>Easy to use</b></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section" id="pricing" aria-labelledby="pricing-title">
+  <div class="wrap">
+    <div class="pricing-box">
+      <div class="pricing-main">
+        <span class="eyebrow">Pricing</span>
+        <h2 class="display" id="pricing-title">Tailored to your business</h2>
+        <p>No two businesses run their appointments the same way, so we don't sell fixed packages. Every solution is scoped around what you need, and your quote reflects exactly that.</p>
+        <p>Start with a free consultation. We'll talk through how you work today and send you a personalised quote.</p>
+        <a class="btn btn-dark" href="#contact" data-focus-form>Request a Personalised Quote
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+      <div class="pricing-side">
+        <h3>What shapes your quote</h3>
+        <ul class="factors">
+          <li>
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg>
+            <div><b>The solutions you choose</b><span>One focused workflow or several working together.</span></div>
+          </li>
+          <li>
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg>
+            <div><b>How you work today</b><span>Your enquiry, booking and follow-up process.</span></div>
+          </li>
+          <li>
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg>
+            <div><b>The tools you already use</b><span>Your website, booking software and messaging channels.</span></div>
+          </li>
+          <li>
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg>
+            <div><b>The support you want</b><span>Guidance at launch and ongoing support after.</span></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section faq" id="faq" aria-labelledby="faq-title">
+  <div class="wrap faq-grid">
+    <div class="section-head" style="margin-bottom:0">
+      <span class="eyebrow">FAQ</span>
+      <h2 class="display" id="faq-title">Common questions</h2>
+      <p>Not sure where automation fits in your business? Start here, or ask us directly.</p>
+    </div>
+    <div class="faq-list">
+      <details open>
+        <summary>What can AI automation do for my business?</summary>
+        <p>It takes repetitive tasks off your team: replying to common enquiries, capturing customer details, confirming bookings and sending reminders. That means less admin, fewer missed enquiries and more time for your clients.</p>
+      </details>
+      <details>
+        <summary>Can it help with enquiries outside business hours?</summary>
+        <p>Yes. Enquiry automation can respond and capture the key details when your team isn't available, so potential bookings aren't lost overnight or at weekends.</p>
+      </details>
+      <details>
+        <summary>Can automation help me get more repeat customers?</summary>
+        <p>Follow-up messages, reminders and rebooking prompts make it easy for clients to come back, and help reduce missed appointments along the way.</p>
+      </details>
+      <details>
+        <summary>How much does AI automation cost?</summary>
+        <p>Pricing is tailored to what your business needs. Book a free consultation and we'll send you a personalised quote.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section contact" id="contact" aria-labelledby="contact-title">
+  <div class="wrap contact-grid">
+    <div class="contact-intro">
+      <span class="eyebrow">Contact</span>
+      <h2 class="display" id="contact-title">Let's talk about your business</h2>
+      <p>Tell us a little about how you work and what you'd like to automate. We'll come back to you to arrange a free consultation.</p>
+      <div class="contact-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+          <span>Old Glasgow Road, Scotland, United Kingdom</span>
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8l4 4v10l-4 4H8l-4-4V7z"/><path d="M9 12l2 2 4-4"/></svg>
+          <span>Free, no-obligation consultation</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-status is-preview" id="form-status" role="note">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M10 6v5M10 14h.01"/></svg>
+        <div><b id="form-status-title">Preview: form not connected yet</b><span id="form-status-text">This form checks your details but does not send them anywhere until an email or backend service is connected.</span></div>
+      </div>
+
+      <form id="enquiry-form" novalidate>
+        <div class="fields">
+          <div class="field">
+            <label for="full-name">Full name <span class="req" aria-hidden="true">*</span></label>
+            <input id="full-name" name="fullName" type="text" autocomplete="name" required aria-describedby="full-name-error">
+            <span class="error" id="full-name-error"></span>
+          </div>
+          <div class="field">
+            <label for="business-name">Business name <span class="req" aria-hidden="true">*</span></label>
+            <input id="business-name" name="businessName" type="text" autocomplete="organization" required aria-describedby="business-name-error">
+            <span class="error" id="business-name-error"></span>
+          </div>
+          <div class="field">
+            <label for="email">Email address <span class="req" aria-hidden="true">*</span></label>
+            <input id="email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="email-error">
+            <span class="error" id="email-error"></span>
+          </div>
+          <div class="field">
+            <label for="phone">Phone number <span class="opt">(optional)</span></label>
+            <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" aria-describedby="phone-error">
+            <span class="error" id="phone-error"></span>
+          </div>
+          <div class="field span-2">
+            <label for="business-type">Business type <span class="req" aria-hidden="true">*</span></label>
+            <select id="business-type" name="businessType" required aria-describedby="business-type-error">
+              <option value="">Select your business type</option>
+              <option>Beauty salon</option>
+              <option>Aesthetic clinic</option>
+              <option>Dental practice</option>
+              <option>Wellness business</option>
+              <option>Other appointment-based business</option>
+            </select>
+            <span class="error" id="business-type-error"></span>
+          </div>
+          <div class="field span-2" id="services-field">
+            <fieldset aria-describedby="services-error">
+              <legend>Services interested in <span class="req" aria-hidden="true">*</span></legend>
+              <div class="checks">
+                <label class="check"><input type="checkbox" id="svc-receptionist" name="services" value="AI Receptionists">AI Receptionists</label>
+                <label class="check"><input type="checkbox" id="svc-booking" name="services" value="Smart Booking & Reminders">Smart Booking &amp; Reminders</label>
+                <label class="check"><input type="checkbox" id="svc-enquiry" name="services" value="AI Enquiry Automation">AI Enquiry Automation</label>
+                <label class="check"><input type="checkbox" id="svc-retention" name="services" value="Customer Follow-Ups & Retention">Customer Follow-Ups &amp; Retention</label>
+                <label class="check span-2"><input type="checkbox" id="svc-unsure" name="services" value="Not sure yet">Not sure yet, I'd like advice</label>
+              </div>
+            </fieldset>
+            <span class="error" id="services-error"></span>
+          </div>
+          <div class="field span-2">
+            <label for="message">Message <span class="req" aria-hidden="true">*</span></label>
+            <textarea id="message" name="message" required placeholder="What takes up most of your team's time at the moment?" aria-describedby="message-error"></textarea>
+            <span class="error" id="message-error"></span>
+          </div>
+          <div class="field span-2">
+            <label class="consent" for="consent">
+              <input type="checkbox" id="consent" name="consent" required aria-describedby="consent-error">
+              <span>I'm happy for ZIG Creative to contact me about this enquiry. See our <button type="button" class="link-btn" data-policy="privacy">Privacy Policy</button>.</span>
+            </label>
+            <span class="error" id="consent-error"></span>
+          </div>
+          <!-- Honeypot: hidden from people, catches simple spam bots -->
+          <div class="hp" aria-hidden="true">
+            <label for="company-website">Leave this empty</label>
+            <input id="company-website" name="companyWebsite" type="text" tabindex="-1" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="form-foot">
+          <button class="btn btn-primary" type="submit" id="submit-btn">Submit Enquiry</button>
+          <small><span class="req">*</span> Required fields</small>
+        </div>
+        <div class="form-result" id="form-result" role="status" aria-live="polite" hidden></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="logo" href="#home" aria-label="ZIG Creative, back to top">
+          <span class="logo-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h11L5 17h15"/></svg>
+          </span>
+          <span class="logo-word">ZIG<span>Creative</span></span>
+        </a>
+        <p class="footer-tag">Intelligent Automation. Smarter Business.</p>
+        <p>AI automation for appointment-based businesses. Old Glasgow Road, Scotland, United Kingdom.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#solutions">Solutions</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><button type="button" data-policy="privacy">Privacy Policy</button></li>
+          <li><button type="button" data-policy="terms">Terms of Service</button></li>
+          <li><button type="button" data-policy="accessibility">Accessibility Statement</button></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year">2026</span> ZIG Creative. All rights reserved.</span>
+      <span>Intelligent Automation. Smarter Business.</span>
+    </div>
+  </div>
+</footer>
+
+<dialog id="policy-dialog" aria-labelledby="policy-title">
+  <div class="dlg">
+    <h2 id="policy-title">Privacy Policy</h2>
+    <p id="policy-text">Placeholder.</p>
+    <button type="button" class="btn btn-dark" id="policy-close">Close</button>
+  </div>
+</dialog>
+
+<script>
+/* =========================================================
+   FORMSPREE CONNECTION
+   Paste your Formspree form endpoint between the quotes below.
+   Find it in Formspree: open your form > Integration tab.
+   It looks like: https://formspree.io/f/xxxxxxxx
+   While this is empty, the form stays in preview mode and
+   tells visitors that nothing has been sent.
+   ========================================================= */
+const FORM_ENDPOINT = "https://formspree.io/f/xzerdeqw";
+
+(function () {
+  "use strict";
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  /* ---------- Footer year ---------- */
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  /* ---------- Mobile navigation ---------- */
+  const toggle = document.getElementById("menu-toggle");
+  const nav = document.getElementById("site-nav");
+  function setMenu(open) {
+    nav.classList.toggle("open", open);
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  }
+  toggle.addEventListener("click", () => setMenu(!nav.classList.contains("open")));
+  nav.addEventListener("click", (e) => { if (e.target.closest("a")) setMenu(false); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") setMenu(false); });
+
+  /* ---------- In-page links: smooth scroll, focus form where relevant ---------- */
+  document.addEventListener("click", (e) => {
+    const link = e.target.closest('a[href^="#"]');
+    if (!link) return;
+    const id = link.getAttribute("href").slice(1);
+    const target = id ? document.getElementById(id) : null;
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: reduceMotion.matches ? "auto" : "smooth", block: "start" });
+    try { history.replaceState(null, "", "#" + id); } catch (_) {}
+    if (link.hasAttribute("data-focus-form")) {
+      setTimeout(() => document.getElementById("full-name").focus({ preventScroll: true }), reduceMotion.matches ? 0 : 650);
+    }
+  });
+
+  /* ---------- Workflow pulse travel distance ---------- */
+  const flowList = document.getElementById("flow-list");
+  function sizePulse() {
+    const items = flowList.querySelectorAll("li");
+    if (items.length < 2) return;
+    const travel = items[items.length - 1].offsetTop - items[0].offsetTop;
+    flowList.style.setProperty("--travel", travel + "px");
+  }
+  sizePulse();
+  window.addEventListener("resize", sizePulse);
+
+  /* ---------- Hero network background ---------- */
+  const canvas = document.getElementById("hero-canvas");
+  const ctx = canvas.getContext("2d");
+  let w = 0, h = 0, dpr = 1, nodes = [], raf = null, visible = true;
+
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = rect.width; h = rect.height;
+    canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const count = Math.min(80, Math.round((w * h) / 16000));
+    nodes = Array.from({ length: count }, () => ({
+      x: Math.random() * w, y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.18, vy: (Math.random() - 0.5) * 0.18,
+      r: Math.random() * 1.4 + 0.6
+    }));
+    draw();
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    // faint grid
+    ctx.strokeStyle = "rgba(255,255,255,0.035)";
+    ctx.lineWidth = 1;
+    const step = 64;
+    ctx.beginPath();
+    for (let x = 0.5; x < w; x += step) { ctx.moveTo(x, 0); ctx.lineTo(x, h); }
+    for (let y = 0.5; y < h; y += step) { ctx.moveTo(0, y); ctx.lineTo(w, y); }
+    ctx.stroke();
+    // links
+    const maxDist = 150;
+    for (let i = 0; i < nodes.length; i++) {
+      const a = nodes[i];
+      for (let j = i + 1; j < nodes.length; j++) {
+        const b = nodes[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const d = Math.hypot(dx, dy);
+        if (d < maxDist) {
+          ctx.strokeStyle = "rgba(91,131,255," + (0.22 * (1 - d / maxDist)).toFixed(3) + ")";
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+        }
+      }
+    }
+    // nodes
+    for (const n of nodes) {
+      ctx.fillStyle = "rgba(140,165,255,0.75)";
+      ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2); ctx.fill();
+    }
+  }
+
+  function tick() {
+    for (const n of nodes) {
+      n.x += n.vx; n.y += n.vy;
+      if (n.x < -20) n.x = w + 20; else if (n.x > w + 20) n.x = -20;
+      if (n.y < -20) n.y = h + 20; else if (n.y > h + 20) n.y = -20;
+    }
+    draw();
+    raf = requestAnimationFrame(tick);
+  }
+  function start() { if (!raf && visible && !document.hidden && !reduceMotion.matches) raf = requestAnimationFrame(tick); }
+  function stop() { if (raf) { cancelAnimationFrame(raf); raf = null; } }
+
+  resize();
+  start();
+  let resizeTimer;
+  window.addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(resize, 150); });
+  document.addEventListener("visibilitychange", () => (document.hidden ? stop() : start()));
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver((entries) => {
+      visible = entries[0].isIntersecting;
+      visible ? start() : stop();
+    }).observe(canvas);
+  }
+  const onMotionChange = () => { stop(); draw(); start(); };
+  if (reduceMotion.addEventListener) reduceMotion.addEventListener("change", onMotionChange);
+
+  /* ---------- Policy placeholders ---------- */
+  const dialog = document.getElementById("policy-dialog");
+  const policies = {
+    privacy: ["Privacy Policy", "Placeholder: the ZIG Creative Privacy Policy will appear here. It should explain what personal data the contact form collects, why, how long it is kept and how people can ask for it to be deleted. Add it before the website goes live."],
+    terms: ["Terms of Service", "Placeholder: the ZIG Creative Terms of Service will appear here. Add them before the website goes live."],
+    accessibility: ["Accessibility Statement", "Placeholder: the ZIG Creative Accessibility Statement will appear here. This site is built with keyboard navigation, strong colour contrast, screen-reader labels and reduced-motion support."]
+  };
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-policy]");
+    if (!btn) return;
+    const [title, text] = policies[btn.dataset.policy];
+    document.getElementById("policy-title").textContent = title;
+    document.getElementById("policy-text").textContent = text;
+    if (typeof dialog.showModal === "function") dialog.showModal(); else dialog.setAttribute("open", "");
+  });
+  document.getElementById("policy-close").addEventListener("click", () => dialog.close ? dialog.close() : dialog.removeAttribute("open"));
+  dialog.addEventListener("click", (e) => { if (e.target === dialog) dialog.close(); });
+
+  /* ---------- Enquiry form ---------- */
+  const form = document.getElementById("enquiry-form");
+  const result = document.getElementById("form-result");
+  const submitBtn = document.getElementById("submit-btn");
+  const endpoint = FORM_ENDPOINT.trim();
+  const isLive = /^https:\/\/\S+$/.test(endpoint);
+  if (endpoint && !isLive) console.warn("FORM_ENDPOINT must be a full https:// address, e.g. https://formspree.io/f/xxxxxxxx. The form is staying in preview mode.");
+
+  // Once an endpoint is set, remove the preview warning
+  if (isLive) document.getElementById("form-status").remove();
+
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  const phoneRe = /^[+()\d\s-]{7,20}$/;
+
+  const rules = [
+    { id: "full-name", test: (v) => v.length >= 2, msg: "Please enter your full name." },
+    { id: "business-name", test: (v) => v.length >= 2, msg: "Please enter your business name." },
+    { id: "email", test: (v) => emailRe.test(v), msg: "Please enter a valid email address, for example name@business.co.uk." },
+    { id: "phone", test: (v) => v === "" || phoneRe.test(v), msg: "Please enter a valid phone number, or leave this blank." },
+    { id: "business-type", test: (v) => v !== "", msg: "Please choose your business type." },
+    { id: "message", test: (v) => v.length >= 10, msg: "Please add a short message (at least 10 characters)." }
+  ];
+
+  function setError(id, msg) {
+    const el = document.getElementById(id);
+    const err = document.getElementById(id + "-error");
+    if (msg) { el.setAttribute("aria-invalid", "true"); err.textContent = msg; }
+    else { el.removeAttribute("aria-invalid"); err.textContent = ""; }
+  }
+
+  function validate() {
+    let firstInvalid = null;
+    for (const r of rules) {
+      const el = document.getElementById(r.id);
+      const ok = r.test(el.value.trim());
+      setError(r.id, ok ? "" : r.msg);
+      if (!ok && !firstInvalid) firstInvalid = el;
+    }
+    const anyService = form.querySelectorAll('input[name="services"]:checked').length > 0;
+    const sf = document.getElementById("services-field");
+    sf.classList.toggle("fieldset-invalid", !anyService);
+    document.getElementById("services-error").textContent = anyService ? "" : "Please choose at least one service, or select “Not sure yet”.";
+    if (!anyService && !firstInvalid) firstInvalid = document.getElementById("svc-receptionist");
+
+    const consent = document.getElementById("consent");
+    setError("consent", consent.checked ? "" : "Please confirm we can contact you about your enquiry.");
+    if (!consent.checked && !firstInvalid) firstInvalid = consent;
+    return firstInvalid;
+  }
+
+  // Clear an error as soon as the user fixes the field
+  form.addEventListener("input", (e) => {
+    const t = e.target;
+    if (t.name === "services") {
+      if (form.querySelectorAll('input[name="services"]:checked').length) {
+        document.getElementById("services-field").classList.remove("fieldset-invalid");
+        document.getElementById("services-error").textContent = "";
+      }
+      return;
+    }
+    if (t.id === "consent" && t.checked) { setError("consent", ""); return; }
+    const rule = rules.find((r) => r.id === t.id);
+    if (rule && t.getAttribute("aria-invalid") === "true" && rule.test(t.value.trim())) setError(t.id, "");
+  });
+
+  function showResult(kind, html) {
+    result.className = "form-result " + kind;
+    result.innerHTML = html;
+    result.hidden = false;
+    result.setAttribute("tabindex", "-1");
+    result.focus({ preventScroll: true });
+    result.scrollIntoView({ behavior: reduceMotion.matches ? "auto" : "smooth", block: "nearest" });
+  }
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    result.hidden = true;
+    const firstInvalid = validate();
+    if (firstInvalid) { firstInvalid.focus(); return; }
+
+    // Honeypot filled: quietly stop
+    if (document.getElementById("company-website").value) return;
+
+    // Field names below are the labels you'll see in the Formspree email.
+    // "email" is kept lowercase so Formspree sets it as the reply-to address.
+    const fullName = form.fullName.value.trim();
+    const businessName = form.businessName.value.trim();
+    const data = {
+      "_subject": "New website enquiry: " + fullName + " (" + businessName + ")",
+      "Full name": fullName,
+      "Business name": businessName,
+      "email": form.email.value.trim(),
+      "Phone": form.phone.value.trim() || "Not provided",
+      "Business type": form.businessType.value,
+      "Services interested in": Array.from(form.querySelectorAll('input[name="services"]:checked')).map((c) => c.value).join(", "),
+      "Message": form.message.value.trim(),
+      "Consent to be contacted": "Yes",
+      "Submitted": new Date().toLocaleString("en-GB", { timeZone: "Europe/London" })
+    };
+
+    if (!isLive) {
+      showResult("warn", "<b>Not sent.</b> Your details passed all the checks, but this form isn't connected to an email or backend service yet, so the enquiry has not been delivered to anyone.");
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Sending…";
+    const controller = typeof AbortController === "function" ? new AbortController() : null;
+    const timer = controller ? setTimeout(() => controller.abort(), 15000) : null;
+    try {
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify(data),
+        signal: controller ? controller.signal : undefined
+      });
+      if (!res.ok) {
+        // Formspree returns { errors: [{ message }] } when it rejects a submission
+        let detail = "";
+        try {
+          const body = await res.json();
+          if (body && Array.isArray(body.errors) && body.errors.length) detail = body.errors.map((er) => er.message).join(" ");
+        } catch (_) {}
+        const err = new Error(detail || "HTTP " + res.status);
+        err.detail = detail;
+        throw err;
+      }
+      form.reset();
+      showResult("ok", "<b>Thank you, " + escapeHtml(fullName.split(" ")[0]) + ". Your enquiry has been received.</b> A member of the ZIG Creative team will review your details and be in touch shortly to arrange your free consultation.");
+    } catch (err) {
+      const why = err && err.name === "AbortError"
+        ? "The connection timed out."
+        : (err && err.detail ? escapeHtml(err.detail.replace(/[.!?]?\s*$/, ".")) : "Something went wrong on our side or with your connection.");
+      showResult("err", "<b>Sorry, your enquiry couldn't be sent.</b> " + why + " Your details are still in the form, so please try again in a moment.");
+    } finally {
+      if (timer) clearTimeout(timer);
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Submit Enquiry";
+    }
+  });
+})();
+</script>
+</body>
+</html>
