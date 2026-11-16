@@ -754,12 +754,14 @@ dialog::backdrop { background: rgba(7,8,11,.6); backdrop-filter: blur(3px); }
 
 <script>
 /* =========================================================
-   FORM CONFIGURATION
-   Paste the endpoint from your form service here to go live
-   (for example a Formspree, Basin, Getform or your own API URL).
-   The form sends JSON via POST. Leave empty to stay in preview mode.
+   FORMSPREE CONNECTION
+   Paste your Formspree form endpoint between the quotes below.
+   Find it in Formspree: open your form > Integration tab.
+   It looks like: https://formspree.io/f/xxxxxxxx
+   While this is empty, the form stays in preview mode and
+   tells visitors that nothing has been sent.
    ========================================================= */
-const FORM_ENDPOINT = "";
+const FORM_ENDPOINT = "https://formspree.io/f/xzerdeqw";
 
 (function () {
   "use strict";
@@ -905,14 +907,12 @@ const FORM_ENDPOINT = "";
   const form = document.getElementById("enquiry-form");
   const result = document.getElementById("form-result");
   const submitBtn = document.getElementById("submit-btn");
-  const isLive = FORM_ENDPOINT.trim() !== "";
+  const endpoint = FORM_ENDPOINT.trim();
+  const isLive = /^https:\/\/\S+$/.test(endpoint);
+  if (endpoint && !isLive) console.warn("FORM_ENDPOINT must be a full https:// address, e.g. https://formspree.io/f/xxxxxxxx. The form is staying in preview mode.");
 
-  if (isLive) {
-    const status = document.getElementById("form-status");
-    status.classList.replace("is-preview", "is-live");
-    document.getElementById("form-status-title").textContent = "Form connected";
-    document.getElementById("form-status-text").textContent = "Enquiries submitted here are sent directly to the ZIG Creative team.";
-  }
+  // Once an endpoint is set, remove the preview warning
+  if (isLive) document.getElementById("form-status").remove();
 
   const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   const phoneRe = /^[+()\d\s-]{7,20}$/;
@@ -972,6 +972,12 @@ const FORM_ENDPOINT = "";
     result.className = "form-result " + kind;
     result.innerHTML = html;
     result.hidden = false;
+    result.setAttribute("tabindex", "-1");
+    result.focus({ preventScroll: true });
+    result.scrollIntoView({ behavior: reduceMotion.matches ? "auto" : "smooth", block: "nearest" });
+  }
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   }
 
   form.addEventListener("submit", async (e) => {
@@ -983,16 +989,21 @@ const FORM_ENDPOINT = "";
     // Honeypot filled: quietly stop
     if (document.getElementById("company-website").value) return;
 
+    // Field names below are the labels you'll see in the Formspree email.
+    // "email" is kept lowercase so Formspree sets it as the reply-to address.
+    const fullName = form.fullName.value.trim();
+    const businessName = form.businessName.value.trim();
     const data = {
-      fullName: form.fullName.value.trim(),
-      businessName: form.businessName.value.trim(),
-      email: form.email.value.trim(),
-      phone: form.phone.value.trim(),
-      businessType: form.businessType.value,
-      services: Array.from(form.querySelectorAll('input[name="services"]:checked')).map((c) => c.value),
-      message: form.message.value.trim(),
-      consent: true,
-      submittedAt: new Date().toISOString()
+      "_subject": "New website enquiry: " + fullName + " (" + businessName + ")",
+      "Full name": fullName,
+      "Business name": businessName,
+      "email": form.email.value.trim(),
+      "Phone": form.phone.value.trim() || "Not provided",
+      "Business type": form.businessType.value,
+      "Services interested in": Array.from(form.querySelectorAll('input[name="services"]:checked')).map((c) => c.value).join(", "),
+      "Message": form.message.value.trim(),
+      "Consent to be contacted": "Yes",
+      "Submitted": new Date().toLocaleString("en-GB", { timeZone: "Europe/London" })
     };
 
     if (!isLive) {
@@ -1002,18 +1013,39 @@ const FORM_ENDPOINT = "";
 
     submitBtn.disabled = true;
     submitBtn.textContent = "Sending…";
+    const controller = typeof AbortController === "function" ? new AbortController() : null;
+    const timer = controller ? setTimeout(() => controller.abort(), 15000) : null;
     try {
-      const res = await fetch(FORM_ENDPOINT, {
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        signal: controller ? controller.signal : undefined
       });
-      if (!res.ok) throw new Error("HTTP " + res.status);
+      if (!res.ok) {
+        // Formspree returns { errors: [{ message }] } when it rejects a submission
+        let detail = "";
+        try {
+          const body = await res.json();
+          if (body && Array.isArray(body.errors) && body.errors.length) detail = body.errors.map((er) => er.message).join(" ");
+        } catch (_) {}
+        const err = new Error(detail || "HTTP " + res.status);
+        err.detail = detail;
+        throw err;
+      }
+      // Only treat it as sent when Formspree explicitly confirms it ({ ok: true })
+      let confirmed = false;
+      try { confirmed = (await res.json()).ok === true; } catch (_) {}
+      if (!confirmed) throw new Error("not_confirmed");
       form.reset();
-      showResult("ok", "<b>Thank you, your enquiry has been sent.</b> We'll be in touch soon to arrange your free consultation.");
+      showResult("ok", "<b>Thank you, " + escapeHtml(fullName.split(" ")[0]) + ". Your enquiry has been received.</b> A member of the ZIG Creative team will review your details and be in touch shortly to arrange your free consultation.");
     } catch (err) {
-      showResult("err", "<b>Sorry, your enquiry couldn't be sent.</b> Please check your connection and try again in a moment.");
+      const why = err && err.name === "AbortError"
+        ? "The connection timed out."
+        : (err && err.detail ? escapeHtml(err.detail.replace(/[.!?]?\s*$/, ".")) : "Something went wrong on our side or with your connection.");
+      showResult("err", "<b>Sorry, your enquiry couldn't be sent.</b> " + why + " Your details are still in the form, so please try again in a moment.");
     } finally {
+      if (timer) clearTimeout(timer);
       submitBtn.disabled = false;
       submitBtn.textContent = "Submit Enquiry";
     }
