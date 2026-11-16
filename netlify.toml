@@ -17,12 +17,3 @@
   for = "/favicon.svg"
   [headers.values]
     Cache-Control = "public, max-age=604800"
-
-[functions]
-  directory = "netlify/functions"
-
-# Serve the AI receptionist demo at /demo
-[[redirects]]
-  from = "/demo"
-  to = "/demo.html"
-  status = 200
